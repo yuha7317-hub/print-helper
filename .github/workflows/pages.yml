@@ -18,7 +18,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - run: mkdir -p site && unzip -o Tawqeer-Print-Helper-App.zip -d site && ls -la site
+      - run: |
+          mkdir -p site
+          unzip -o Tawqeer-Print-Helper-App.zip -d site
+          for f in index.html manifest.json sw.js icon-192.png icon-512.png icon-maskable-512.png; do
+            if [ -f "$f" ]; then cp -f "$f" site/; fi
+          done
+          ls -la site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
